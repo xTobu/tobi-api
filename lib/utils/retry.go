@@ -11,7 +11,8 @@ type stop struct {
 }
 
 // Retry ...
-func Retry(attempts int, sleep time.Duration, fn func() error) error {
+func Retry(attempts int, times int, fn func() error) error {
+	sleep := time.Duration(times) * time.Second
 	if err := fn(); err != nil {
 		if s, ok := err.(stop); ok {
 			return s.error
@@ -20,7 +21,7 @@ func Retry(attempts int, sleep time.Duration, fn func() error) error {
 		if attempts--; attempts > 0 {
 			log.Info(fmt.Sprintf("retry func error: %s. attemp #%d after %s.", err.Error(), attempts, sleep))
 			time.Sleep(sleep)
-			return Retry(attempts, sleep, fn)
+			return Retry(attempts, times, fn)
 		}
 		return err
 	}

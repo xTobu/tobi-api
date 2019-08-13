@@ -5,7 +5,6 @@ import (
 	"tobi-api/lib/database"
 	"tobi-api/lib/utils"
 
-	"time"
 	"tobi-api/lib/database/repositories"
 	"tobi-api/server"
 )
@@ -20,7 +19,7 @@ func main() {
 	config.Init(ENV)
 	conf := config.GetConfig()
 	// 初始化 database
-	err := utils.Retry(3, 5*time.Second, func() (err error) {
+	err := utils.Retry(3, 5, func() (err error) {
 		err = database.Init(conf.Database)
 		return
 	})
