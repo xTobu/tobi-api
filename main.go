@@ -3,20 +3,30 @@ package main
 import (
 	"tobi-api/lib/config"
 	"tobi-api/lib/database"
-	"tobi-api/lib/log"
+	"tobi-api/lib/utils"
+
+	"time"
 	"tobi-api/lib/database/repositories"
 	"tobi-api/server"
-	"time"
+)
+
+var (
+	// ENV 編譯的環境變數
+	ENV = "development"
 )
 
 func main() {
 	// 初始化 config
-	config.Init("development")
+	config.Init(ENV)
 	conf := config.GetConfig()
-	log.Info("wait")
-	time.Sleep(time.Duration(10) * time.Second)
 	// 初始化 database
-	database.Init(conf.Database)
+	err := utils.Retry(3, 5*time.Second, func() (err error) {
+		err = database.Init(conf.Database)
+		return
+	})
+	if err != nil {
+		panic("database.Init Fail")
+	}
 	repositories.Init()
 
 	// 初始化 server

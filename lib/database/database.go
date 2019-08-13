@@ -10,10 +10,9 @@ import (
 )
 
 var db *gorm.DB
-var err error
 
 // Init : Initial Db connection
-func Init(c config.DatabaseStruct) {
+func Init(c config.DatabaseStruct) (err error) {
 	connArgs := fmt.Sprintf("sslmode=%s host=%s dbname=%s user=%s password=%s", c.SSLMode, c.Host, c.DBName, c.User, c.Password)
 	db, err = gorm.Open("postgres", connArgs)
 	if err != nil {
@@ -21,6 +20,7 @@ func Init(c config.DatabaseStruct) {
 	}
 	// 全局使用單數表名
 	db.SingularTable(true)
+	return
 
 	// // 启用Logger，显示详细日志
 	// db.LogMode(true)
