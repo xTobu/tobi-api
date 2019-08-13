@@ -1,0 +1,9 @@
+[server]
+port = ":8888"
+
+[database]
+sslmode = "disable"
+host = "db"
+dbname = "tobi" 
+user = "su"
+password = "0000"
