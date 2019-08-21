@@ -3,7 +3,7 @@ port = ":8888"
 
 [database]
 sslmode = "disable"
-host = "db"
+host = "localhost"
 dbname = "tobi" 
 user = "su"
 password = "0000"
